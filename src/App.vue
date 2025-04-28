@@ -1,13 +1,15 @@
 <script>
-  import First from './components/First.vue'
+import Header from './components/Header.vue';
+
   export default {
     name: "App",
-    components: {First},
+    components: {Header},
   }
 </script>
 
 <template>
-  <First/>
+  <Header/>
+  <RouterView/>
 </template>
 
 <style scoped>
