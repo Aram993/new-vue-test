@@ -1,10 +1,10 @@
 <template>
     <div>
         <Loader v-if="isLoading"/>
-        <div class="photos">
-            <div class="card" v-for="photo in photos">
-                {{ photo.title }}
-            </div>
+        <div class="wrap">
+            <RouterLink class="card" v-for="item in users" :to="`/users/${item.id}`">
+                {{ item.name }}
+            </RouterLink>
         </div>
     </div>
 </template>
@@ -12,22 +12,22 @@
 import Loader from '@/components/Loader.vue';
 import { $axios } from '@/utils/axios';
 export default {
-    name: "SecondPage",
+    name: "Users",
     components: {Loader},
     data() {
         return {
-            $axios,
-            photos: [],
-            isLoading: false
+            users: [],
+            isLoading: false,
+            userId: null
         }
     },
 
     methods: {
-        async getPhotos() {
+        async getUsers() {
             try {
                 this.isLoading = true;
-                const response = await $axios.get("/photos");
-                this.photos.push(...response.data.filter(item => item.albumId === 1));
+                const response = await $axios.get("/users");
+                this.users.push(...response.data);
             } catch(err) {
                 console.error(err)
             } finally {
@@ -36,15 +36,19 @@ export default {
         }
     },
     created() {
-        this.getPhotos();
+        this.getUsers();
     }
 }
 </script>
 <style lang="scss" scoped>
-    .photos {
-        display: flex;
-        flex-wrap: wrap;
+    .wrap {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        row-gap: 40px;
+        width: 60%;
+        margin: 50px auto;
     }
+    
     .card {
         width: 200px;
         height: 200px;
@@ -57,5 +61,10 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        &:hover {
+            cursor: pointer;
+            box-shadow: 5px 5px 5px 5px;
+        }
     }
 </style>

@@ -1,8 +1,9 @@
 <template>
     <div class="container">
         <RouterLink to="/main">Main</RouterLink>
-        <router-link to="/second">Photos</router-link>
-        <RouterLink to="/third">Comments</RouterLink>
+        <router-link to="/users">Users</router-link>
+        <RouterLink to="/posts">Posts</RouterLink>
+        <RouterLink to="/comments">Comments</RouterLink>
     </div>
 </template>
 <script>

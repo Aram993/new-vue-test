@@ -1,11 +1,10 @@
 <template>
     <div>
        <Loader v-if="isLoading"/>
-       <div class="comments">
-            <div class="card" v-for="comment in comments">
-                <span>{{ comment.email }}</span>
-                <span>{{ comment.name }}</span>
-            </div>
+       <div class="posts">
+            <RouterLink class="card" v-for="item in posts" :to="`/posts/${item.id}`">
+                <span>{{ item.title }}</span>
+            </RouterLink>
        </div>
     </div>
 </template>
@@ -13,20 +12,20 @@
 import Loader from '@/components/Loader.vue';
 import { $axios } from '@/utils/axios';
 export default {
-    name: "ThirdPage",
+    name: "Posts",
     components: {Loader},
     data() {
         return {
             isLoading: false,
-            comments: []
+            posts: []
         }
     },
     methods: {
         async getComments() {
             try {
                 this.isLoading = true
-                const response = await $axios.get("/comments");
-                this.comments.push(...response.data.filter(item => item.id < 26));
+                const response = await $axios.get("/posts");
+                this.posts.push(...response.data.filter(item => item.id < 51));
             } catch(err) {
                 console.error(err);
             } finally {
@@ -40,8 +39,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    .comments {
+    .posts {
         display: flex;
+        gap: 15px;
+        padding: 15px;
         flex-wrap: wrap;
     }
 
@@ -58,10 +59,12 @@ export default {
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
+        text-align: center;
+        font-size: 25px;
 
-        > span:last-child {
-            color: cadetblue;
-            text-align: center;
+        &:hover {
+            cursor: pointer;
+            box-shadow: 5px 5px 5px 5px;
         }
     }
 </style>
